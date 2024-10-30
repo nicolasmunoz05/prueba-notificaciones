@@ -1,0 +1,51 @@
+<div class="notificaciones-container">
+  <h2>Añadir Notificación</h2>
+  <form (submit)="addNotification($event)" class="notification-form" novalidate>
+    <input type="text" 
+           placeholder="Título" 
+           [(ngModel)]="newNotification.title" 
+           name="title" 
+           [ngClass]="{'error': showErrors && !newNotification.title}" 
+           required />
+    <input type="text" 
+           placeholder="Descripción" 
+           [(ngModel)]="newNotification.description" 
+           name="description" 
+           [ngClass]="{'error': showErrors && !newNotification.description}" 
+           required />
+
+           <label
+            type="text"
+          *ngIf="showErrors && (!newNotification.title || !newNotification.description)"
+          class="error-message"
+           >
+            Ambos campos son necesarios
+           </label>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  
+    
+  <div class="bell-icon" (click)="toggleDropdown()" tabindex="0">
+    <i class="fas fa-bell"></i>
+    <span *ngIf="unreadCount > 0" class="notification-count">{{ unreadCount }}</span>
+  </div>
+
+</div>
+
+<ul *ngIf="dropdownOpen" class="notification-list">
+  <li *ngIf="notifications.length === 0" class="no-notifications">No hay notificaciones</li>
+  <li *ngFor="let notification of notifications" 
+      [ngClass]="{'notification-item': true, 'read': notification.read}"
+      (mouseenter)="markAsRead(notification)">
+    <div class="notification-title">{{ notification.title }}</div>
+    <div class="notification-description">{{ notification.description }}</div>
+    <div class="notification-date">{{ notification.date | date:'dd/MM/yyyy, h:mm a' }}</div>
+    <button class="delete" (click)="deleteNotification(notification)">Eliminar</button>
+  </li>
+</ul>
+
+<p class="project-description">
+  Autor: Nicolas Muñoz Toloza <br> El funcionamiento cuenta con interfaz responsiva, validación del formulario, estilos sencillos en css, y funcionamiento sin back-end actualmente. <br> Las notificaciones se marcan como leídas al pasar el mouse por encima. 
+</p>
